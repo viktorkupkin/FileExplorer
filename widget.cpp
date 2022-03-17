@@ -430,6 +430,12 @@ void Widget::on_GetInfo_Button_clicked() //вывод размера файла 
     QMessageBox *msg = new QMessageBox(this);
     QFileInfo fileInfo(soure_file_path);
     double size = 0;
+    qint64 bytes_in_KiloBytes = 1000;
+    qint64 bytes_in_MegaBytes = 1000000;
+    qint64 bytes_in_GigaBytes = 1000000000;
+    qint64 low_bound1 = 999;
+    qint64 low_bound2 = 999999;
+    qint64 hight_bound1 = 999999999;
     QString units;
     QString dateCreate = fileInfo.birthTime().toString("hh:mm:ss dd.MM.yyyy");
     if(fileInfo.isDir())
@@ -440,21 +446,21 @@ void Widget::on_GetInfo_Button_clicked() //вывод размера файла 
         size = fileInfo.size();
     }
 
-    if(size < 1000)
+    if(size < bytes_in_KiloBytes)
     {
         units = " bytes.";
     }
-    else if(size > 999 & size < 999999)
+    else if(size > low_bound1 & size < low_bound2)
     {
-        size /= 1000;
+        size /= bytes_in_KiloBytes;
         units = " KB.";
-    }else if(size > 999999 & size < 999999999)
+    }else if(size > low_bound2 & size < hight_bound1)
     {
-        size /= 1000000;
+        size /= bytes_in_MegaBytes;
         units = " MB.";
     }else
     {
-        size /= 1000000000;
+        size /= bytes_in_GigaBytes;
         units = " GB.";
     }
     QString fileSize;
